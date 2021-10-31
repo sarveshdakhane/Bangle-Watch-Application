@@ -73,9 +73,6 @@ g.clear();
 draw();
 var secondInterval = setInterval(draw, 1000);
 
-
-
-
   setWatch(() => {
   Btn1PressCount= Btn1PressCount+1;
   }, BTN1, {repeat: true});
