@@ -104,12 +104,6 @@ var secondInterval = setInterval(draw, 1000);
   }
   });
 
-
-
-
-
-
-
 // Stop updates when LCD is off, restart when on
 Bangle.on('lcdPower',on=>{
   if (secondInterval) clearInterval(secondInterval);
