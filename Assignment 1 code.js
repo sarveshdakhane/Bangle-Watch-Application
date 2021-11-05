@@ -1,6 +1,6 @@
-// To Load the fonts
+//To Load the fonts
 require("Font4x8Numeric").add(Graphics);
-// Content position on screen
+//Content position on screen
 const X = 180, Y = 90;
 //Screen Interaction Variables
 var LeftClickedCount = 0;
@@ -10,15 +10,19 @@ var RightSwipedCount = 0;
 var Btn1PressCount = 0;
 var Btn2PressCount = 0;
 var Btn3PressCount = 0;
+//Today's Date Flag
+var TodaysDate = new Date();
 
 function draw() {
   //Work out how to display the current time
   var d = new Date();
+  //Check new day condition to rest the watch interaction count
+  if (new Date([TodaysDate.getDate(), TodaysDate.getDay(), TodaysDate.getFullYear()].join('/')) != new Date([d.getDate(), d.getDay(), d.getFullYear()].join('/'))) { console.log("Date Changed"); ResettoZero(); }
   var h = d.getHours(), m = d.getMinutes();
   var time = (" " + h).substr(-2) + "-" + ("0" + m).substr(-2);
-  // Reset the state of the graphics library
+  //Reset the state of the graphics library
   g.reset();
-  // Draw the current time (4x size 7 segment)
+  //Draw the current time (4x size 7 segment)
   g.setFont("4x8Numeric", 6);
   g.setColor("#A0FF33");
   g.setFontAlign(1, 1); // align right bottom
@@ -55,15 +59,24 @@ function draw() {
   g.drawString("Bt2C", 121, 208, true);
   g.drawString("Bt3C", 171, 208, true);
   //********************* For second logic**********************
-  // draw the seconds (2x size 7 segment)
+  //Draw the seconds (2x size 7 segment)
   g.setFont("4x8Numeric", 4);
   g.setColor("#FEFEFE");
   g.drawString(("0" + d.getSeconds()).substr(-2), X + 30, Y, true /*clear background*/);
 }
-
-// Clear the screen once, at startup
+//Reset Watch interaction variable after new day
+function ResettoZero() {
+  LeftClickedCount = 0;
+  RightClickedCount = 0;
+  LeftSwipedCount = 0;
+  RightSwipedCount = 0;
+  Btn1PressCount = 0;
+  Btn2PressCount = 0;
+  Btn3PressCount = 0;
+}
+//Clear the screen once, at startup
 g.clear();
-// draw immediately at first
+//Draw immediately at first
 draw();
 var secondInterval = setInterval(draw, 1000);
 setWatch(() => {
@@ -89,8 +102,7 @@ Bangle.on('touch', (sDir) => {
     RightClickedCount += 1;
   }
 });
-
-// Stop updates when LCD is off, restart when on
+//Stop updates when LCD is off, restart when on
 Bangle.on('lcdPower', on => {
   if (secondInterval) clearInterval(secondInterval);
   secondInterval = undefined;
@@ -99,7 +111,7 @@ Bangle.on('lcdPower', on => {
     draw(); // draw immediately
   }
 });
-// Show launcher when middle button pressed
+//Show launcher when middle button pressed
 Bangle.loadWidgets();
 Bangle.drawWidgets();
 
